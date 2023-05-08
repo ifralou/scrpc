@@ -17,11 +17,14 @@ async function* workStationsPaginator() {
     });
     const getNextPageId = getNextPageLink();
 
+    console.log("wsp: Started.");
+
     await page.goto(start_url);
     await page.waitForSelector("#or-popup")
     await (await page.$(nextButtonSelector)).click();
     await page.setDefaultTimeout(5000);
 
+    console.log("wsp: Begin to traverse pages.")
     while (true) {
 
         let nextButton = await page.$(nextButtonSelector);
@@ -38,10 +41,11 @@ async function* workStationsPaginator() {
 
         const res = [];
         for (let box of boxes) {
-            const name = await (await box.$(".top .fb a")).evaluate(el => el.textContent);
+            const {name, href} = await (await box.$(".top .fb a")).evaluate(el => ({name: el.textContent, href: el.href}));
             const price = await (await box.$(".bottom .price-box__price")).evaluate(el => el.textContent);
-            res.push([name, normalizePrice(price)])
+            res.push({name, href, price: normalizePrice(price)});
         }
+        console.log(`wsp: Page traversed, results found: ${res.length}`)
 
         yield res;
 

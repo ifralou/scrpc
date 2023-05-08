@@ -3,18 +3,16 @@ const workStationsPaginator = require("./src/alza/workstations/workstationsPagin
 
 
 const filename = "results.txt";
-const  db = new Map();
+const db = [];
 
 (async () => {
 
-   for await ( const box of workStationsPaginator()) {
+    for await (const box of workStationsPaginator()) {
+        for (let {name, href, price} of box) {
+            db.push({name, href, price})
+        }
+    }
 
-      for(let [name, price] of box) {
-         db.set(name, Math.min(db.get(name) ?? Infinity, price));
-      }
-
-   }
-
-   console.log(db);
+    console.log(db);
 
 })();

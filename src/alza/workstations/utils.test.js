@@ -1,8 +1,12 @@
 const normalizePrice = require('./utils');
 
-const test1 = "55 990,-\n";
-const solution1 = 55990;
+test(`Price normalization test.`, () => {
+    const data = [
+        {test: "55 990,-\n", solution: 55990},
+        {test: "113 840,-", solution: 113840}
+    ];
 
-test(`Normilized price ${test1} must by ${solution1}`, () => {
-    expect(normalizePrice(test1)).toBe(solution1);
+    for (let {test, solution} of data) {
+        expect(normalizePrice(test)).toBe(solution);
+    }
 });
