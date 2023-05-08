@@ -1,5 +1,4 @@
 const normalizePrice = require('./utils');
-
 test(`Price normalization test.`, () => {
     const data = [
         {test: "55 990,-\n", solution: 55990},
